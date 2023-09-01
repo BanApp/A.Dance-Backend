@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-connector-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongodb-connector
+  template:
+    metadata:
+      labels:
+        app: mongodb-connector
+    spec:
+      containers:
+        - name: mongodb-connector
+          image: jmj0801/mongodb-connector-app:v2  # 도커 이미지 이름과 태그
+          ports:
+            - containerPort: 8005  # FastAPI 애플리케이션 포트
+          # 환경 변수 설정
+          envFrom:
+            - configMapRef:
+                name: mongodb-config

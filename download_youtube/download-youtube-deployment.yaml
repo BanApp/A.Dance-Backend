@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: download-youtube-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: download-youtube
+  template:
+    metadata:
+      labels:
+        app: download-youtube
+    spec:
+      containers:
+        - name: download-youtube-app
+          image: jmj0801/download-youtube-app:v2-updated1
+          ports:
+            - containerPort: 8001

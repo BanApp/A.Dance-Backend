@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-connector-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mariadb-connector
+  template:
+    metadata:
+      labels:
+        app: mariadb-connector
+    spec:
+      containers:
+        - name: mariadb-connector
+          image: jmj0801/mariadb-connector-app:v2  # 빌드한 도커 이미지 이름
+          ports:
+            - containerPort: 8004  # FastAPI 애플리케이션 포트
+          # 환경 변수 설정
+          env:
+            - name: MARIADB_HOST
+              value: mariadb-service  # MariaDB 서비스의 DNS 이름
+            - name: MARIADB_PORT
+              value: "3306"  # MariaDB 서비스 포트
+            - name: MARIADB_USER
+              value: "root"
+            - name: MARIADB_PASSWORD
+              value: "jmj0801"
+            - name: MARIADB_DATABASE
+              value: "music"

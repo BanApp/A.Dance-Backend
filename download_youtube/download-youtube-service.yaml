@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: download-youtube-service
+spec:
+  selector:
+    app: download-youtube
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
+  type: ClusterIP

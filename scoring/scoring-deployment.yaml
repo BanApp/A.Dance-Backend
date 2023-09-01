@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoring-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: scoring
+  template:
+    metadata:
+      labels:
+        app: scoring
+    spec:
+      containers:
+        - name: scoring-app
+          image: jmj0801/scoring-app:v5-updatedpck
+          ports:
+            - containerPort: 8003
