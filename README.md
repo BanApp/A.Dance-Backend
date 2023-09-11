@@ -86,6 +86,7 @@
 <h2>🔗 링크</h2>   
 
 - 시연 영상 : https://youtu.be/PP-_aJwnB5w
+- Backend 레포 : https://github.com/BanApp/A.Dance-Backend
 
 <br/>
 
