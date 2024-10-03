@@ -96,7 +96,7 @@
 <table align=center>
     <thead>
         <tr >
-            <th style="text-align:center;" >정민준</th>
+            <th style="text-align:center;" >@@@</th>
             <th style="text-align:center;" >신민준</th>
             <th style="text-align:center;" >김다희</th>
             <th style="text-align:center;" >방지수</th>
