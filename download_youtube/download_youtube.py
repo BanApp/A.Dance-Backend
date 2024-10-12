@@ -9,6 +9,7 @@ from ShazamAPI import Shazam
 import hashlib
 import httpx
 import shutil
+import io
 
 # FastAPI 애플리케이션 생성
 app = FastAPI()
@@ -224,18 +225,20 @@ def get_keypoints(image):
 
 
 # 음악 정보 추출 (ShazamAPI 사용)
-def recognize_song_info(youtube_obj, url):
-    audio_stream = youtube_obj.streams.filter(only_audio=True).first()  # 오디오 스트림 가져오기
+async def recognize_song_info(youtube_obj, url):
+    try:
+        audio_stream = youtube_obj.streams.filter(only_audio=True).first()
+        audio_content = io.BytesIO()
+        audio_stream.stream_to_buffer(audio_content)  # 오디오 스트림을 메모리로 바로 다운로드
+        audio_content.seek(0)
 
-    audio_filename = f"{youtube_obj.video_id}.mp3"  # 오디오 파일 이름 생성
-    audio_filepath = os.path.join(download_path, audio_filename)  # 오디오 파일 경로 생성
-    audio_stream.download(output_path=download_path, filename=audio_filename)  # 오디오 파일 다운로드
+        song_info = await get_song_info(audio_content, url)
+        logging.info("음악 정보 추출 완료.")
+    except Exception as e:
+        logging.error(f"음악 정보 추출 중 오류 발생: {e}")
+        raise HTTPException(status_code=500, detail="음악 정보 추출 중 오류가 발생했습니다.")
 
-    song_info = get_song_info(audio_filepath, url)  # 음악 정보 추출 함수 호출
-    os.remove(audio_filepath)  # 다운로드한 오디오 파일 삭제
-
-    return song_info  # 추출된 음악 정보 반환
-
+    return song_info
 
 # ShazamAPI를 이용하여 음악 정보 추출
 def get_song_info(audio_filepath, url):
